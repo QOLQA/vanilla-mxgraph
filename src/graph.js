@@ -35,9 +35,6 @@ function createGraph() {
     return mx.mxGraph.prototype.createHandler.apply(this, arguments);
   }
 
-  // resize parent container
-  // graph.setResizeContainer(true);
-
   return graph;
 }
 
