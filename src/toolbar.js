@@ -42,7 +42,9 @@ if (!mx.mxClient.isBrowserSupported()) {
     new mx.mxDivResizer(container);
   }
 
-  let graph = createGraph();
+  let {graph, editor} = createGraph();
+
+  editor.setGraphContainer(container);
 
   createLayout(graph);
   // graph.createHandler = function(state) {

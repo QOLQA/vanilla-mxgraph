@@ -1,7 +1,14 @@
+import mx from "./util";
 
 
 export function Column(name) {
   this.name = name;
+}
+
+Column.prototype.type = 'string';
+Column.prototype.primaryKey = false;
+Column.prototype.clone = function() {
+  return mx.mxUtils.clone(this);
 }
 
 export function Table(name) {
@@ -9,6 +16,6 @@ export function Table(name) {
 }
 
 Table.prototype.clone = function() {
-  return ;
+  return mx.mxUtils.clone(this);
 }
 
