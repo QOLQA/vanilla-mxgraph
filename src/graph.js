@@ -40,6 +40,14 @@ function createGraph() {
     return this.isSwimlane(cell);
   }
 
+  graph.createHandler = function(state) {
+    if (state != null && this.model.isVertex(state.cell)) {
+      return new mxVertexToolHandler(state);
+    }
+
+    return mx.mxGraph.prototype.createHandler.apply(this, arguments);
+  }
+
   return { graph, editor };
 }
 
