@@ -1,7 +1,5 @@
+import mx from "./util";
 
-import factory from "./util";
-
-const mx = factory('../../node_modules/@aire-ux/mxgraph/javascript/src/');
 
 const imagesPath = '../../examples/images/';
 
@@ -48,7 +46,7 @@ mxVertexToolHandler.prototype.init = function() {
   mx.mxEvent.addGestureListeners(img,
     mx.mxUtils.bind(this, function(evt) {
       // cada que se borra ??
-      console.log('se ejecuta cada vez que ?');
+      console.log('se ejecuta cada vez que se arrastra o click');
       mx.mxEvent.consume(evt);
     })
   );
@@ -59,6 +57,7 @@ mxVertexToolHandler.prototype.init = function() {
       // myVertexHandler.graph.removeCells([myVertexHandler.state.cell]);
       this.graph.removeCells([this.state.cell]);
       //this.grap
+      console.log('state de clik', this.state);
       mx.mxEvent.consume(evt);
     })
   );
@@ -78,6 +77,24 @@ mxVertexToolHandler.prototype.init = function() {
     })
   );
 
+  mx.mxEvent.addListener(imgPlus, 'click',
+    mx.mxUtils.bind(this, function(evt) {
+      let graph = this.graph;
+      let { cell } = this.state;
+      let { geometry } = cell;
+      let { width } = geometry;
+      console.log('cell', cell);
+      console.log('geometry', geometry);
+      console.log('width', width);
+      graph.getModel().beginUpdate();
+      try {
+        let v2 = graph.insertVertex(cell, null, 'hijo', 0, 0, width, 30)
+      } finally {
+        graph.getModel().endUpdate();
+      }
+      mx.mxEvent.consume(evt);
+    })
+  )
   this.domNode.appendChild(imgPlus);
 
   // agregar iconos

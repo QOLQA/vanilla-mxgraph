@@ -1,8 +1,7 @@
-import mxVertexToolHandler from "./contexticons";
+//import mxVertexToolHandler from "./contexticons";
 import createGraph from "./graph";
-import factory from "./util";
-
-let mx = factory('../../node_modules/@aire-ux/mxgraph/javascript/src');
+import createLayout from "./layout";
+import mx from "./util";
 
 let container = document.querySelector('#container');
 
@@ -45,21 +44,14 @@ if (!mx.mxClient.isBrowserSupported()) {
 
   let graph = createGraph();
 
-  graph.createHandler = function(state) {
-    if (state != null && this.model.isVertex(state.cell)) {
-      return new mxVertexToolHandler(state);
-    }
+  createLayout(graph);
+  // graph.createHandler = function(state) {
+  //   if (state != null && this.model.isVertex(state.cell)) {
+  //     return new mxVertexToolHandler(state);
+  //   }
 
-    return mx.mxGraph.prototype.createHandler.apply(this, arguments);
-  }
-
-  graph.createHandler = function(state) {
-    if (state != null && this.model.isVertex(state.cell)) {
-      return new mxVertexToolHandler(state);
-    }
-
-    return mx.mxGraph.prototype.createHandler.apply(this, arguments);
-  };
+  //   return mx.mxGraph.prototype.createHandler.apply(this, arguments);
+  // };
 
   // empareja DNd dentro del grafo
   mx.mxDragSource.prototype.getDropTarget = function(graph, x, y) {

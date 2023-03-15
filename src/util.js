@@ -13,4 +13,6 @@ function factory(mxBasePath) {
   });
 }
 
-export default factory;
+const mx = factory('../../node_modules/@aire-ux/mxgraph/javascript/src');
+
+export default mx;

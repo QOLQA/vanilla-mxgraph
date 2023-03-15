@@ -1,7 +1,6 @@
 // import mxVertexToolHandler from "./contexticons";
-import factory from "./util";
-
-const mx = factory('../../node_modules/@aire-ux/mxgraph/javascript/src');
+import mxVertexToolHandler from "./contexticons";
+import mx from "./util";
 
 const container = document.querySelector('#container');
 
@@ -24,17 +23,20 @@ function createGraph() {
   new mx.mxRubberband(graph);
 
   // conexion de vertices
-  // graph.createHandler = function(state) {
-  //   // console.log('estado en graph', state);
-  //   if (state != null && this.model.isVertex(state.cell)) {
-  //     return new mxVertexToolHandler(state);
-  //   }
-  //   // if (this.model.isVertex(state.cell)) {
-  //   //   let handler = new mxVertexToolHandler(state);
-  //   // }
+  graph.createHandler = function(state) {
+    // console.log('estado en graph', state);
+    if (state != null && this.model.isVertex(state.cell)) {
+      return new mxVertexToolHandler(state);
+    }
+    // if (this.model.isVertex(state.cell)) {
+    //   let handler = new mxVertexToolHandler(state);
+    // }
 
-  //   return mx.mxGraph.prototype.createHandler.apply(this, arguments);
-  // }
+    return mx.mxGraph.prototype.createHandler.apply(this, arguments);
+  }
+
+  // resize parent container
+  // graph.setResizeContainer(true);
 
   return graph;
 }
