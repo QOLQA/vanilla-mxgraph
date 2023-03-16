@@ -46,7 +46,7 @@ if (!mx.mxClient.isBrowserSupported()) {
 
   editor.setGraphContainer(container);
 
-  createLayout(graph);
+  createLayout(editor);
   // graph.createHandler = function(state) {
   //   if (state != null && this.model.isVertex(state.cell)) {
   //     return new mxVertexToolHandler(state);

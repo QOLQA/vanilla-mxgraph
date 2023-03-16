@@ -1,27 +1,18 @@
 import mx from "./util";
 
 
-function createLayout(graph) {
-  let layout = new mx.mxStackLayout(graph, true);
-  layout.border = graph.border;
+function createLayout(editor) {
+  editor.layoutSwimlanes = true;
+  editor.createSwimlaneLayout = function() {
+    let layout = new mx.mxStackLayout(this.graph, false);
+    layout.fill = true;
+    layout.resizeParent = true;
 
-  let layoutMgr = new mx.mxLayoutManager(graph);
-  layoutMgr.getLayout = function(cell) {
-    if (!cell.collapsed) {
-      if (cell.parent != graph.model.root) {
-        layout.resizeParent = true;
-        layout.horizontal = false;
-        layout.spacing = 2;
-      } else {
-        layout.resizeParent = true;
-        layout.horizontal = true;
-        layout.spacing = 15;
-      }
-
-      return layout;
+    layout.isVertexMovable = function(cell) {
+      return true;
     }
 
-    return null;
+    return layout;
   }
 }
 

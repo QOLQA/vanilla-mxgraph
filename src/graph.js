@@ -41,9 +41,12 @@ function createGraph() {
   }
 
   graph.createHandler = function(state) {
-    if (state != null && this.model.isVertex(state.cell)) {
+    if (state != null && this.isSwimlane(state.cell)) {
       return new mxVertexToolHandler(state);
     }
+    // if (state != null && this.model.isVertex(state.cell)) {
+    //   return new mxVertexToolHandler(state);
+    // }
 
     return mx.mxGraph.prototype.createHandler.apply(this, arguments);
   }
