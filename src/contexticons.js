@@ -1,3 +1,5 @@
+import { overlay } from "./attributeTypes";
+import { column } from "./cells";
 import mx from "./util";
 
 
@@ -54,9 +56,7 @@ mxVertexToolHandler.prototype.init = function() {
   // el this se vincula con mxVexterHandler que tiene graph
   mx.mxEvent.addListener(img, 'click',
     mx.mxUtils.bind(this, function(evt) {
-      // myVertexHandler.graph.removeCells([myVertexHandler.state.cell]);
       this.graph.removeCells([this.state.cell]);
-      //this.grap
       console.log('state de clik', this.state);
       mx.mxEvent.consume(evt);
     })
@@ -81,14 +81,12 @@ mxVertexToolHandler.prototype.init = function() {
     mx.mxUtils.bind(this, function(evt) {
       let graph = this.graph;
       let { cell } = this.state;
-      let { geometry } = cell;
-      let { width } = geometry;
-      console.log('cell', cell);
-      console.log('geometry', geometry);
-      console.log('width', width);
       graph.getModel().beginUpdate();
       try {
-        let v2 = graph.insertVertex(cell, null, 'hijo', 0, 0, width, 30)
+        let v1 = graph.getModel().cloneCell(column);
+        //let v2 = graph.insertVertex(cell, null, v1, 0, 0, width, 30)
+        graph.addCell(v1, cell);
+        graph.addCellOverlay(v1, overlay);
       } finally {
         graph.getModel().endUpdate();
       }

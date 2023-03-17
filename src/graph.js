@@ -1,4 +1,5 @@
 // import mxVertexToolHandler from "./contexticons";
+import { configMenuCell } from "./attributeTypes";
 import mxVertexToolHandler from "./contexticons";
 import mx from "./util";
 
@@ -50,6 +51,22 @@ function createGraph() {
 
     return mx.mxGraph.prototype.createHandler.apply(this, arguments);
   }
+
+  configMenuCell(graph);
+
+  // labels
+  graph.isHtmlLabel = function(cell) {
+    return !this.isSwimlane(cell) && !this.model.isEdge(cell);
+  }
+
+  graph.getLabel = function(cell) {
+    if (this.isHtmlLabel(cell)) {
+      // cell.value este sera mi objeto
+      return `${cell.value.name}:\t${cell.value.type}`;
+    }
+  }
+
+  // let model = graph.getModel();
 
   return { graph, editor };
 }

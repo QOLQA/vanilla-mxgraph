@@ -5,7 +5,7 @@ export function Column(name) {
   this.name = name;
 }
 
-Column.prototype.type = 'string';
+Column.prototype.type = 'String';
 Column.prototype.primaryKey = false;
 Column.prototype.clone = function() {
   return mx.mxUtils.clone(this);
