@@ -42,9 +42,11 @@ if (!mx.mxClient.isBrowserSupported()) {
     new mx.mxDivResizer(container);
   }
 
-  let graph = createGraph();
+  let {graph, editor} = createGraph();
 
-  createLayout(graph);
+  editor.setGraphContainer(container);
+
+  createLayout(editor);
   // graph.createHandler = function(state) {
   //   if (state != null && this.model.isVertex(state.cell)) {
   //     return new mxVertexToolHandler(state);

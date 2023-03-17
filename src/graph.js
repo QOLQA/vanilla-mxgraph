@@ -7,38 +7,51 @@ const container = document.querySelector('#container');
 let examplesImagePath = '../../examples/images/';
 
 function createGraph() {
-  // definimos connction handler image
-  mx.mxConnectionHandler.prototype.connectImage = new mx.mxImage(examplesImagePath + 'connector.gif', 16, 16);
+  // mxswimlane modif
+  mx.mxSwimlane.prototype.imageSize = 20;
+  mx.mxSwimlane.prototype.imageDx = 16;
+  mx.mxSwimlane.prototype.imageDy = 4;
 
-  // sin el model
-  let model = new mx.mxGraphModel();
-  let graph = new mx.mxGraph(container, model);
-  // let graph = new mx.mxGraph(container);
-  // configuraciones
+  mx.mxSwimlane.prototype.getImageBounds = function(x, y, w, h) {
+    return new mx.mxRectangle(
+      x + this.imageDx, y + this.imageDy,
+      this.imageSize, this.imageSize
+    );
+  }
+
+  mx.mxConnectionHandler.prototype.connectImage = new mx.mxImage('/images/connector.gif', 16, 16);
+
+  let editor = new mx.mxEditor();
+  let graph = editor.graph;
+
   graph.setConnectable(true);
-  // Cada vez que arrastramos una conexion crea un modelo
-  graph.connectionHandler.createTarget = true;
+  graph.setCellsDisconnectable(false);
+  graph.setCellsCloneable(false);
+  graph.swimlaneNesting = false;
+  graph.dropEnabled = true;
+  graph.setAllowDanglingEdges(false);
+  graph.connectionHandler.factoryMethod = null;
 
-  // rubber band
-  new mx.mxRubberband(graph);
+  graph.isCellResizable = function(cell) {
+    return this.isSwimlane(cell);
+  }
 
-  // conexion de vertices
+  graph.isCellMovable = function(cell) {
+    return this.isSwimlane(cell);
+  }
+
   graph.createHandler = function(state) {
-    // console.log('estado en graph', state);
-    if (state != null && this.model.isVertex(state.cell)) {
+    if (state != null && this.isSwimlane(state.cell)) {
       return new mxVertexToolHandler(state);
     }
-    // if (this.model.isVertex(state.cell)) {
-    //   let handler = new mxVertexToolHandler(state);
+    // if (state != null && this.model.isVertex(state.cell)) {
+    //   return new mxVertexToolHandler(state);
     // }
 
     return mx.mxGraph.prototype.createHandler.apply(this, arguments);
   }
 
-  // resize parent container
-  // graph.setResizeContainer(true);
-
-  return graph;
+  return { graph, editor };
 }
 
 export default createGraph;
