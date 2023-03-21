@@ -66,8 +66,6 @@ function createGraph() {
     }
   }
 
-  // let model = graph.getModel();
-
   return { graph, editor };
 }
 

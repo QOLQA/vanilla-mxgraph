@@ -30,20 +30,25 @@ export function configMenuCell(graph) {
     graph.popupMenuHandler.autoExpand = true;
 
     graph.popupMenuHandler.factoryMethod = function(menu, cell, evt) {
-      menu.addItem('String', null, modifyType(cell, 'String'));
-      menu.addItem('Integer', null, modifyType(cell, 'Integer'));
-      menu.addItem('Boolean', null, modifyType(cell, 'Boolean'));
-      menu.addItem('Double', null, modifyType(cell, 'Double'));
-      menu.addItem('Arrays', null, modifyType(cell, 'Arrays'));
-      menu.addItem('Timestamp', null, modifyType(cell, 'Timestamp'));
-      menu.addItem('Object', null, modifyType(cell, 'Object'));
-      menu.addItem('Null', null, modifyType(cell, 'Null'));
-      menu.addItem('Symbol', null, modifyType(cell, 'Symbol'));
-      menu.addItem('Date', null, modifyType(cell, 'Date'));
+      menu.addItem('String', null, () => modifyType(cell, 'String', graph));
+      menu.addItem('Integer', null, () => modifyType(cell, 'Integer', graph));
+      menu.addItem('Boolean', null, () => modifyType(cell, 'Boolean', graph));
+      menu.addItem('Double', null, () => modifyType(cell, 'Double', graph));
+      menu.addItem('Arrays', null, () => modifyType(cell, 'Arrays', graph));
+      menu.addItem('Timestamp', null, () => modifyType(cell, 'Timestamp', graph));
+      menu.addItem('Object', null, () => modifyType(cell, 'Object', graph));
+      menu.addItem('Null', null, () => modifyType(cell, 'Null', graph));
+      menu.addItem('Symbol', null, () => modifyType(cell, 'Symbol', graph));
+      menu.addItem('Date', null, () => modifyType(cell, 'Date', graph));
     }
   }
 }
 
-function modifyType(cell, type) {
-  cell.value.type = type;
+function modifyType(cell, type, graph) {
+  let clone = cell.value.clone();
+  // clone.name = cell.value.name;
+  console.log('clone', clone);
+  clone.type = type;
+
+  graph.model.setValue(cell, clone);
 }
