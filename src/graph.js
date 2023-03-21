@@ -41,6 +41,7 @@ function createGraph() {
     return this.isSwimlane(cell);
   }
 
+  // vienve de otra parte
   graph.createHandler = function(state) {
     if (state != null && this.isSwimlane(state.cell)) {
       return new mxVertexToolHandler(state);
