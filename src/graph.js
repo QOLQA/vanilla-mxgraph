@@ -1,5 +1,4 @@
-// import mxVertexToolHandler from "./contexticons";
-import { mxConstants } from "@aire-ux/mxgraph";
+
 import { configMenuCell } from "./attributeTypes";
 import mxVertexToolHandler from "./contexticons";
 import mxIconSet from "./hoverIcons";
