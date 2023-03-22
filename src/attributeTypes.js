@@ -47,7 +47,7 @@ export function configMenuCell(graph) {
 function modifyType(cell, type, graph) {
   let clone = cell.value.clone();
   // clone.name = cell.value.name;
-  console.log('clone', clone);
+  // console.log('clone', clone);
   clone.type = type;
 
   graph.model.setValue(cell, clone);

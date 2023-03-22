@@ -47,8 +47,6 @@ mxVertexToolHandler.prototype.init = function() {
 
   mx.mxEvent.addGestureListeners(img,
     mx.mxUtils.bind(this, function(evt) {
-      // cada que se borra ??
-      console.log('se ejecuta cada vez que se arrastra o click');
       mx.mxEvent.consume(evt);
     })
   );
@@ -57,7 +55,6 @@ mxVertexToolHandler.prototype.init = function() {
   mx.mxEvent.addListener(img, 'click',
     mx.mxUtils.bind(this, function(evt) {
       this.graph.removeCells([this.state.cell]);
-      console.log('state de clik', this.state);
       mx.mxEvent.consume(evt);
     })
   );
@@ -79,16 +76,20 @@ mxVertexToolHandler.prototype.init = function() {
 
   mx.mxEvent.addListener(imgPlus, 'click',
     mx.mxUtils.bind(this, function(evt) {
-      let graph = this.graph;
-      let { cell } = this.state;
-      graph.getModel().beginUpdate();
-      try {
-        let v1 = graph.getModel().cloneCell(column);
-        //let v2 = graph.insertVertex(cell, null, v1, 0, 0, width, 30)
-        graph.addCell(v1, cell);
-        graph.addCellOverlay(v1, overlay);
-      } finally {
-        graph.getModel().endUpdate();
+      let columnName = mx.mxUtils.prompt('Enter a column name');
+      if (columnName != null) {
+        let graph = this.graph;
+        let { cell } = this.state;
+        graph.getModel().beginUpdate();
+        try {
+          let v1 = graph.getModel().cloneCell(column);
+          v1.value.name = columnName;
+          //let v2 = graph.insertVertde ex(cell, null, v1, 0, 0, width, 30)
+          graph.addCell(v1, cell);
+          graph.addCellOverlay(v1, overlay);
+        } finally {
+          graph.getModel().endUpdate();
+        }
       }
       mx.mxEvent.consume(evt);
     })

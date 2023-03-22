@@ -48,13 +48,6 @@ if (!mx.mxClient.isBrowserSupported()) {
   editor.setGraphContainer(container);
 
   createLayout(editor);
-  // graph.createHandler = function(state) {
-  //   if (state != null && this.model.isVertex(state.cell)) {
-  //     return new mxVertexToolHandler(state);
-  //   }
-
-  //   return mx.mxGraph.prototype.createHandler.apply(this, arguments);
-  // };
 
   // empareja DNd dentro del grafo
   mx.mxDragSource.prototype.getDropTarget = function(graph, x, y) {
@@ -72,9 +65,9 @@ if (!mx.mxClient.isBrowserSupported()) {
   let rubberband = new mx.mxRubberband(graph);
 
   let addVertex = function(icon, w, h, style) {
-    let vertex = new mx.mxCell(null, new mx.mxGeometry(0, 0, w, h), style);
-    vertex.setVertex(true);
-
+    // let vertex = new mx.mxCell(null, new mx.mxGeometry(0, 0, w, h), style);
+    // vertex.setVertex(true);
+    let vertex = graph.getModel().cloneCell(table);
     addToolbarItem(graph, toolbar, vertex, icon);
   };
 
@@ -87,12 +80,17 @@ function addToolbarItem(graph, toolbar, prototype, image) {
   let funct = function(graph, evt, cell) {
     graph.stopEditing(false);
 
-    let pt = graph.getPointForEvent(evt);
-    let vertex = graph.getModel().cloneCell(prototype);
-    vertex.geometry.x = pt.x;
-    vertex.geometry.y = pt.y;
+    var name = mx.mxUtils.prompt('Enter name for new document');
 
-    graph.setSelectionCells(graph.importCells([vertex], 0, 0, cell));
+    if (name != null && name.trim() != '') {
+      let pt = graph.getPointForEvent(evt);
+      let vertex = graph.getModel().cloneCell(prototype);
+      vertex.value.name = name;
+      vertex.geometry.x = pt.x;
+      vertex.geometry.y = pt.y;
+      vertex.geometry.alternateBounds = new mx.mxRectangle(0, 0, vertex.geometry.width, vertex.geometry.height);
+      graph.setSelectionCells(graph.importCells([vertex], 0, 0, cell));
+    }
   };
 
   // crea la imagen que es usada para el arrastre

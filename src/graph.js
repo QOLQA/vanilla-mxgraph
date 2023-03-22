@@ -1,11 +1,57 @@
 // import mxVertexToolHandler from "./contexticons";
+import { mxConstants } from "@aire-ux/mxgraph";
 import { configMenuCell } from "./attributeTypes";
 import mxVertexToolHandler from "./contexticons";
+import mxIconSet from "./hoverIcons";
 import mx from "./util";
 
 const container = document.querySelector('#container');
 
 let examplesImagePath = '../../examples/images/';
+
+// confiuracion de estilos para tablas
+function configureTableStyle(graph) {
+  let style = new Object();
+  style[mx.mxConstants.STYLE_SHAPE] = mx.mxConstants.SHAPE_SWIMLANE;
+  style[mx.mxConstants.STYLE_SHAPE] = mx.mxConstants.SHAPE_SWIMLANE;
+  style[mx.mxConstants.STYLE_PERIMETER] = mx.mxPerimeter.RectanglePerimeter;
+  style[mx.mxConstants.STYLE_ALIGN] = mx.mxConstants.ALIGN_CENTER;
+  style[mx.mxConstants.STYLE_VERTICAL_ALIGN] = mx.mxConstants.ALIGN_TOP;
+  style[mx.mxConstants.STYLE_GRADIENTCOLOR] = '#41B9F5';
+  style[mx.mxConstants.STYLE_FILLCOLOR] = '#8CCDF5';
+  style[mx.mxConstants.STYLE_SWIMLANE_FILLCOLOR] = '#ffffff';
+  style[mx.mxConstants.STYLE_STROKECOLOR] = '#1B78C8';
+  style[mx.mxConstants.STYLE_FONTCOLOR] = '#000000';
+  style[mx.mxConstants.STYLE_STROKEWIDTH] = '2';
+  style[mx.mxConstants.STYLE_STARTSIZE] = '28';
+  style[mx.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
+  style[mx.mxConstants.STYLE_FONTSIZE] = '12';
+  style[mx.mxConstants.STYLE_FONTSTYLE] = 1;
+  style[mx.mxConstants.STYLE_IMAGE] = 'images/icons48/table.png';
+  // Looks better without opacity if shadow is enabled
+  style[mx.mxConstants.STYLE_OPACITY] = '80';
+  style[mx.mxConstants.STYLE_SHADOW] = 1;
+  graph.getStylesheet().putCellStyle('table', style);
+
+  style = new Object();
+  style[mx.mxConstants.STYLE_SHAPE] = mx.mxConstants.SHAPE_RECTANGLE;
+  style[mx.mxConstants.STYLE_PERIMETER] = mx.mxPerimeter.RectanglePerimeter;
+  style[mx.mxConstants.STYLE_ALIGN] = mx.mxConstants.ALIGN_LEFT;
+  style[mx.mxConstants.STYLE_VERTICAL_ALIGN] = mx.mxConstants.ALIGN_MIDDLE;
+  style[mx.mxConstants.STYLE_FONTCOLOR] = '#000000';
+  style[mx.mxConstants.STYLE_FONTSIZE] = '11';
+  style[mx.mxConstants.STYLE_FONTSTYLE] = 0;
+  style[mx.mxConstants.STYLE_SPACING_LEFT] = '4';
+  style[mx.mxConstants.STYLE_IMAGE_WIDTH] = '48';
+  style[mx.mxConstants.STYLE_IMAGE_HEIGHT] = '48';
+  graph.getStylesheet().putDefaultVertexStyle(style);
+
+  style = graph.stylesheet.getDefaultEdgeStyle();
+  style[mx.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = '#FFFFFF';
+  style[mx.mxConstants.STYLE_STROKEWIDTH] = '2';
+  style[mx.mxConstants.STYLE_ROUNDED] = true;
+  style[mx.mxConstants.STYLE_EDGE] = mx.mxEdgeStyle.EntityRelation;
+}
 
 function createGraph() {
   // mxswimlane modif
@@ -41,18 +87,23 @@ function createGraph() {
     return this.isSwimlane(cell);
   }
 
-  // vienve de otra parte
+  // retornar un label
+  graph.convertValueToString = function(cell) {
+    if (cell.value != null && cell.value.name != null) {
+      return cell.value.name;
+    }
+  }
+
+  // viene de otra parte
   graph.createHandler = function(state) {
     if (state != null && this.isSwimlane(state.cell)) {
       return new mxVertexToolHandler(state);
     }
-    // if (state != null && this.model.isVertex(state.cell)) {
-    //   return new mxVertexToolHandler(state);
-    // }
 
     return mx.mxGraph.prototype.createHandler.apply(this, arguments);
   }
 
+  // menu para cambiar el tipo de atributo
   configMenuCell(graph);
 
   // labels
@@ -60,12 +111,82 @@ function createGraph() {
     return !this.isSwimlane(cell) && !this.model.isEdge(cell);
   }
 
+  // retorna la etiqueta de la celda
   graph.getLabel = function(cell) {
     if (this.isHtmlLabel(cell)) {
       // cell.value este sera mi objeto
       return `${cell.value.name}:\t${cell.value.type}`;
+    } else if (this.isSwimlane(cell)) {
+      return cell.value.name;
     }
   }
+
+  graph.model.valueForCellChanged = function(cell, value) {
+    if (value.name != null) {
+      return mx.mxGraphModel.prototype.valueForCellChanged.apply(this, arguments);
+    } else {
+      let old = cell.value.name;
+      cell.value.name = value;
+      return old;
+    }
+  }
+
+  let iconTolerance = 20;
+
+  // modify hover effect
+  graph.addMouseListener({
+    currentState: null,
+    currentIconSet: null,
+    mouseDown: function(sender, me) {
+      if (this.currentState != null) {
+        this.dragLeave(me.getEvent(), this.currentState);
+        this.currentState = null;
+      }
+    },
+    mouseMove: function(sender, me) {
+      if (this.currentState != null && (me.getState() == this.currentState || me.getState() == null)) {
+        let tol = iconTolerance;
+        let tmp = new mx.mxRectangle(
+          me.getGraphX() - tol, me.getGraphY() - tol, 2 * tol, 2 * tol
+        );
+
+        if (mx.mxUtils.intersects(tmp, this.currentState)) return;
+      }
+
+      // recuperamos la celda
+      let tmp = graph.view.getState(me.getCell());
+
+      if (graph.isMouseDown || (tmp != null && !graph.isHtmlLabel(tmp.cell))) {
+        tmp = null;
+      }
+
+      if (tmp != this.currentState) {
+        if (this.currentState != null) {
+          this.dragLeave(me.getEvent(), this.currentState);
+        }
+
+        this.currentState = tmp;
+
+        if (this.currentState != null) {
+          this.dragEnter(me.getEvent(), this.currentState);
+        }
+      }
+    },
+    mouseUp: function(sender, me) { },
+    dragEnter: function(evt, state) {
+      if (this.currentIconSet == null) {
+        this.currentIconSet = new mxIconSet(state);
+      }
+    },
+    dragLeave: function(evt, state) {
+      if (this.currentIconSet != null) {
+        this.currentIconSet.destroy();
+        this.currentIconSet = null;
+      }
+    }
+  });
+
+  configureTableStyle(graph);
 
   return { graph, editor };
 }
