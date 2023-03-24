@@ -16,37 +16,37 @@ function configureTableStyle(graph) {
   style[mx.mxConstants.STYLE_PERIMETER] = mx.mxPerimeter.RectanglePerimeter;
   style[mx.mxConstants.STYLE_ALIGN] = mx.mxConstants.ALIGN_CENTER;
   style[mx.mxConstants.STYLE_VERTICAL_ALIGN] = mx.mxConstants.ALIGN_TOP;
-  style[mx.mxConstants.STYLE_GRADIENTCOLOR] = '#41B9F5';
-  style[mx.mxConstants.STYLE_FILLCOLOR] = '#8CCDF5';
-  style[mx.mxConstants.STYLE_SWIMLANE_FILLCOLOR] = '#ffffff';
-  style[mx.mxConstants.STYLE_STROKECOLOR] = '#1B78C8';
-  style[mx.mxConstants.STYLE_FONTCOLOR] = '#000000';
-  style[mx.mxConstants.STYLE_STROKEWIDTH] = '2';
-  style[mx.mxConstants.STYLE_STARTSIZE] = '28';
-  style[mx.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
-  style[mx.mxConstants.STYLE_FONTSIZE] = '12';
-  style[mx.mxConstants.STYLE_FONTSTYLE] = 1;
-  style[mx.mxConstants.STYLE_IMAGE] = 'images/icons48/table.png';
+  style[mx.mxConstants.STYLE_GRADIENTCOLOR] = '#D19FFF';//abajo tittle
+  style[mx.mxConstants.STYLE_FILLCOLOR] = '#C287FA'; //arriba tittle
+  style[mx.mxConstants.STYLE_SWIMLANE_FILLCOLOR] = '#FFFFFF '; //casillero del atributo 
+  style[mx.mxConstants.STYLE_STROKECOLOR] = '#FFFFFF'; // borde
+  style[mx.mxConstants.STYLE_FONTCOLOR] = '#000000'; //fuente de letra T
+  style[mx.mxConstants.STYLE_STROKEWIDTH] = '2'; //grosor de borde
+  style[mx.mxConstants.STYLE_STARTSIZE] = '28'; //tamanio tittle --- NO TOCAR
+  style[mx.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle'; //posicion respecto a vertical
+  style[mx.mxConstants.STYLE_FONTSIZE] = '12'; //tamnio de letra
+  style[mx.mxConstants.STYLE_FONTSTYLE] = 2; //estilo: italico T
+  //style[mx.mxConstants.STYLE_IMAGE] = 'images/icons48/table.png';
   // Looks better without opacity if shadow is enabled
-  style[mx.mxConstants.STYLE_OPACITY] = '80';
-  style[mx.mxConstants.STYLE_SHADOW] = 1;
+  style[mx.mxConstants.STYLE_OPACITY] = '100';//opacidad de la tabla
+  style[mx.mxConstants.STYLE_SHADOW] = 0;//shadow...para tridimensionalidad
   graph.getStylesheet().putCellStyle('table', style);
 
   style = new Object();
   style[mx.mxConstants.STYLE_SHAPE] = mx.mxConstants.SHAPE_RECTANGLE;
   style[mx.mxConstants.STYLE_PERIMETER] = mx.mxPerimeter.RectanglePerimeter;
-  style[mx.mxConstants.STYLE_ALIGN] = mx.mxConstants.ALIGN_LEFT;
+  style[mx.mxConstants.STYLE_ALIGN] = mx.mxConstants.ALIGN_MIDDLE;
   style[mx.mxConstants.STYLE_VERTICAL_ALIGN] = mx.mxConstants.ALIGN_MIDDLE;
-  style[mx.mxConstants.STYLE_FONTCOLOR] = '#000000';
-  style[mx.mxConstants.STYLE_FONTSIZE] = '11';
-  style[mx.mxConstants.STYLE_FONTSTYLE] = 0;
-  style[mx.mxConstants.STYLE_SPACING_LEFT] = '4';
-  style[mx.mxConstants.STYLE_IMAGE_WIDTH] = '48';
-  style[mx.mxConstants.STYLE_IMAGE_HEIGHT] = '48';
+  style[mx.mxConstants.STYLE_FONTCOLOR] = '#000000'; //color de fuente A
+  style[mx.mxConstants.STYLE_FONTSIZE] = '11'; //tamanio
+  style[mx.mxConstants.STYLE_FONTSTYLE] = 0; //stilo
+  /*style[mx.mxConstants.STYLE_SPACING_LEFT] = '8';
+  style[mx.mxConstants.STYLE_IMAGE_WIDTH] = '100';
+  style[mx.mxConstants.STYLE_IMAGE_HEIGHT] = '48';*/
   graph.getStylesheet().putDefaultVertexStyle(style);
 
   style = graph.stylesheet.getDefaultEdgeStyle();
-  style[mx.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = '#FFFFFF';
+  style[mx.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = '#FAF7C6 ';
   style[mx.mxConstants.STYLE_STROKEWIDTH] = '2';
   style[mx.mxConstants.STYLE_ROUNDED] = true;
   style[mx.mxConstants.STYLE_EDGE] = mx.mxEdgeStyle.EntityRelation;

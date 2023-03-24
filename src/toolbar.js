@@ -44,7 +44,7 @@ if (!mx.mxClient.isBrowserSupported()) {
   }
 
   let {graph, editor} = createGraph();
-
+  graph.dropEnabled = true;
   editor.setGraphContainer(container);
 
   createLayout(editor);
