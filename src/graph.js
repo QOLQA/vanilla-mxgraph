@@ -16,8 +16,8 @@ function configureTableStyle(graph) {
   style[mx.mxConstants.STYLE_PERIMETER] = mx.mxPerimeter.RectanglePerimeter;
   style[mx.mxConstants.STYLE_ALIGN] = mx.mxConstants.ALIGN_CENTER;
   style[mx.mxConstants.STYLE_VERTICAL_ALIGN] = mx.mxConstants.ALIGN_TOP;
-  style[mx.mxConstants.STYLE_GRADIENTCOLOR] = '#D19FFF';//abajo tittle
-  style[mx.mxConstants.STYLE_FILLCOLOR] = '#C287FA'; //arriba tittle
+  style[mx.mxConstants.STYLE_GRADIENTCOLOR] = '#FFAC81';//abajo tittle
+  style[mx.mxConstants.STYLE_FILLCOLOR] = '#FF928B'; //arriba tittle
   style[mx.mxConstants.STYLE_SWIMLANE_FILLCOLOR] = '#FFFFFF '; //casillero del atributo 
   style[mx.mxConstants.STYLE_STROKECOLOR] = '#FFFFFF'; // borde
   style[mx.mxConstants.STYLE_FONTCOLOR] = '#000000'; //fuente de letra T
@@ -44,12 +44,12 @@ function configureTableStyle(graph) {
   style[mx.mxConstants.STYLE_IMAGE_WIDTH] = '100';
   style[mx.mxConstants.STYLE_IMAGE_HEIGHT] = '48';*/
   graph.getStylesheet().putDefaultVertexStyle(style);
-
+  //--Estilo de la flecha
   style = graph.stylesheet.getDefaultEdgeStyle();
-  style[mx.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = '#FAF7C6 ';
+  style[mx.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = '#FFFFF ';
   style[mx.mxConstants.STYLE_STROKEWIDTH] = '2';
-  style[mx.mxConstants.STYLE_ROUNDED] = true;
-  style[mx.mxConstants.STYLE_EDGE] = mx.mxEdgeStyle.EntityRelation;
+  style[mx.mxConstants.STYLE_ROUNDED] = true; //redondeado
+  style[mx.mxConstants.STYLE_EDGE] = mx.mxEdgeStyle.SideToSide; //estilo?
 }
 
 function createGraph() {
@@ -71,10 +71,10 @@ function createGraph() {
   let graph = editor.graph;
 
   graph.setConnectable(true);
-  graph.setCellsDisconnectable(false);
-  graph.setCellsCloneable(false);
-  graph.swimlaneNesting = false;
-  graph.dropEnabled = true;
+  graph.setCellsDisconnectable(true); //desconectar y pasar a otrp
+  graph.setCellsCloneable(true); //clona manteniendo crtl y arrastrando
+  graph.swimlaneNesting = true; //permite agrupar anidar los grafos entre si
+  graph.dropEnabled = true; //permite el anidamiento total (en false no se anidan las propiedades del grafo)
   graph.setAllowDanglingEdges(false);
   graph.connectionHandler.factoryMethod = null;
 
