@@ -77,11 +77,12 @@ function createGraph() {
   graph.dropEnabled = true; //permite el anidamiento total (en false no se anidan las propiedades del grafo)
   graph.setAllowDanglingEdges(false);
   graph.connectionHandler.factoryMethod = null;
-
+  
+  //si la figura es un swinlane se puede redimencionar
   graph.isCellResizable = function(cell) {
     return this.isSwimlane(cell);
   }
-
+  // se puede mover si la figura es un swinlane
   graph.isCellMovable = function(cell) {
     return this.isSwimlane(cell);
   }
@@ -92,8 +93,8 @@ function createGraph() {
       return cell.value.name;
     }
   }
-
-  // viene de otra parte
+  
+  // viene de otra parte //se borran los iconos de + y X al borrar la funcion
   graph.createHandler = function(state) {
     if (state != null && this.isSwimlane(state.cell)) {
       return new mxVertexToolHandler(state);
@@ -105,7 +106,7 @@ function createGraph() {
   // menu para cambiar el tipo de atributo
   configMenuCell(graph);
 
-  // labels
+  // labels -- devuelve true si la etiqueta no es un swinlane o un borde lo que permite tratar como html
   graph.isHtmlLabel = function(cell) {
     return !this.isSwimlane(cell) && !this.model.isEdge(cell);
   }
@@ -119,7 +120,8 @@ function createGraph() {
       return cell.value.name;
     }
   }
-
+ //reemplaza la propiedad name del valor de la celda con un nuevo valor proporcionado,
+ // y devuelve el valor anterior de la propiedad name si no se proporcionó un nuevo valor.
   graph.model.valueForCellChanged = function(cell, value) {
     if (value.name != null) {
       return mx.mxGraphModel.prototype.valueForCellChanged.apply(this, arguments);
